@@ -5,7 +5,6 @@ import '../services/web_cache_store.dart';
 class CharacterRepository {
   final _store = WebCacheStore();
 
-  // OJO: tu StatsTab usa CharacterRepository.skillKeys
   static const List<String> skillKeys = [
     "acrobatics",
     "animal_handling",
@@ -27,11 +26,9 @@ class CharacterRepository {
     "survival",
   ];
 
-  // monedas en inventory (igual que mobile)
   static const currencyNote = '__currency__';
   static const currencyKeys = ['cp', 'sp', 'ep', 'gp', 'pp'];
 
-  // ----------------- Helpers -----------------
   Future<List<Map<String, dynamic>>> _all() => _store.loadAll();
   Future<void> _save(List<Map<String, dynamic>> all) => _store.saveAll(all);
 
@@ -75,7 +72,6 @@ class CharacterRepository {
     return [];
   }
 
-  // elimina _id internos al exportar
   dynamic _stripInternal(dynamic v) {
     if (v is List) return v.map(_stripInternal).toList();
     if (v is Map) {
@@ -139,7 +135,6 @@ class CharacterRepository {
     };
   }
 
-  // ----------------- Character list -----------------
   Future<List<Map<String, Object?>>> listCharacters() async {
     final all = await _all();
     return all.map((e) {
@@ -168,7 +163,6 @@ class CharacterRepository {
     await _save(all);
   }
 
-  // ----------------- Get/update character -----------------
   Future<Map<String, Object?>> getCharacter(int charId) async {
     final all = await _all();
     final data = _findData(all, charId);
@@ -196,7 +190,6 @@ class CharacterRepository {
     await _save(all);
   }
 
-  // ----------------- Vitals -----------------
   Future<Map<String, Object?>> getVitals(int charId) async {
     final all = await _all();
     final data = _findData(all, charId);
@@ -216,7 +209,6 @@ class CharacterRepository {
     await _save(all);
   }
 
-  // ----------------- Stats -----------------
   Future<Map<String, Object?>> getStats(int charId) async {
     final all = await _all();
     final data = _findData(all, charId);
@@ -236,7 +228,6 @@ class CharacterRepository {
     await _save(all);
   }
 
-  // ----------------- Skills -----------------
   Future<Map<String, SkillRow>> getSkills(int charId) async {
     final all = await _all();
     final data = _findData(all, charId);
@@ -268,7 +259,6 @@ class CharacterRepository {
     await _save(all);
   }
 
-  // ----------------- Inventory (con monedas) -----------------
   Future<void> ensureCurrencyRows(int charId) async {
     final all = await _all();
     final data = _findData(all, charId);
@@ -376,7 +366,6 @@ class CharacterRepository {
     await updateInventoryItem(rowId, {'qty': newQty});
   }
 
-  // ----------------- Attacks -----------------
   Future<List<Map<String, Object?>>> listAttacks(int charId) async {
     final all = await _all();
     final data = _findData(all, charId);
